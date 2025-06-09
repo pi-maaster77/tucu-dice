@@ -93,6 +93,7 @@ class GameAPI:
         for i, boton in enumerate(self.secuencia):
             self.ventana.after(int(i * 1.2 * self.tiempo * 1000), lambda b=boton: b.iluminar(self.tiempo))
         total_delay = int(len(self.secuencia) * 1.2 * self.tiempo * 1000)
+        # Solo habilita los botones después de mostrar la secuencia
         self.ventana.after(total_delay, self._habilitar_botones)
         self.ventana.after(total_delay, lambda: setattr(self, 'mostrando', False))
         self.indice_actual = 0
