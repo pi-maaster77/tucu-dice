@@ -1,8 +1,1 @@
-{
-    "puntos": 200,
-    "nombre": "Dante"
-},
-{
-    "puntos": 100,
-    "nombre": "Tucu"
-},
+{"nombre": "pa", "puntos": 8}

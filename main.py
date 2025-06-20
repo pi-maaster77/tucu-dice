@@ -26,7 +26,7 @@ class MainMenu(tk.Tk):
         self.geometry("500x400")
         self.configure(bg=paleta.bg)
         self.resizable(False, False)
-        self.tucu_label = None
+        self.tucu_label:tk.Label
         self.create_widgets()
 
     def create_widgets(self):
@@ -74,6 +74,7 @@ class DifficultyMenu(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
+        self.protocol("WM_DELETE_WINDOW", parent.quit)
         self.title("Seleccionar Dificultad")
         self.geometry("400x350")
         self.configure(bg=paleta.bg)
@@ -99,11 +100,12 @@ class DifficultyMenu(tk.Toplevel):
 
     def back_to_menu(self):
         self.withdraw()
-        self.master.deiconify()
+        self.parent.deiconify()
 
 class TutorialMenu(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
+        self.protocol("WM_DELETE_WINDOW", parent.quit)
         self.parent = parent
         self.title("Tutorial")
         self.geometry("400x350")
@@ -123,12 +125,13 @@ class TutorialMenu(tk.Toplevel):
 
     def back_to_menu(self):
         self.withdraw()
-        self.master.deiconify()
+        self.parent.deiconify()
 
 class OpcionesMenu(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
+        self.protocol("WM_DELETE_WINDOW", self.parent.quit)
         self.title("Opciones")
         self.geometry("400x350")
         self.configure(bg=paleta.bg)
@@ -144,7 +147,7 @@ class OpcionesMenu(tk.Toplevel):
 
     def _crear_boton_color(self, texto, color):
         btn = tk.Button(self, text=texto, font=FONT_BUTTON, bg=paleta.btn,
-                        command=lambda: cambiar_color_fondo(color, self.master, self.master.tucu_label), width=7)
+                        command=lambda: cambiar_color_fondo(color, self.parent, self.parent.tucu_label), width=7)
         btn.pack(pady=10)
 
     def _crear_boton(self, texto, comando, bg=None, pady=10):
@@ -154,12 +157,13 @@ class OpcionesMenu(tk.Toplevel):
 
     def back_to_menu(self):
         self.withdraw()
-        self.master.deiconify()
+        self.parent.deiconify()
 
 class RecordMenu(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
+        self.protocol("WM_DELETE_WINDOW", self.parent.quit)
         self.title("Records")
         self.geometry("400x350")
         self.configure(bg=paleta.bg)
@@ -192,7 +196,7 @@ class RecordMenu(tk.Toplevel):
 
     def back_to_menu(self):
         self.withdraw()
-        self.master.deiconify()
+        self.parent.deiconify()
 
 if __name__ == "__main__":
     main = MainMenu()

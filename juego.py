@@ -1,5 +1,6 @@
 import tkinter as tk
 from random import choice
+from tkinter import simpledialog
 
 # Mapa de colores
 TABLA_COLORES = {
@@ -53,7 +54,8 @@ class Estado(tk.Label):
 
 class MainGame(tk.Toplevel):
     def __init__(self, dificultad, parent, paleta):
-        super().__init__(parent)
+        self.parent = parent
+        super().__init__(self.parent)
         self.geometry("400x350")
         self.config(bg=paleta.bg)
         self.api = GameAPI(dificultad, self, paleta)
@@ -68,7 +70,7 @@ class MainGame(tk.Toplevel):
 
     def back_to_menu(self):
         self.destroy()
-        self.master.deiconify()
+        self.parent.deiconify()
 
 class BotonJuego(tk.Button):
     def __init__(self, color_hex, api, parent):
@@ -132,6 +134,22 @@ class GameAPI:
                 self.set_mostrando(True)
                 self.ventana.after(int(self.tiempo * 1200), self.nueva_ronda)
         else:
+            record = self.rondas.rondas * len(self.botones)
+            try:
+                with open("records.txt", "r") as f:
+                    records = eval(f"[{f.read()}]")  # Aquí podrías mostrar los records en la interfaz
+                    scores = [r["puntos"] for r in records]
+            except FileNotFoundError:
+                records = []
+            if scores and record > min(scores) or len(scores) < 5:
+                
+                nombre = simpledialog.askstring("Nuevo Record", "Ingresa tu nombre:")
+                if nombre:
+                    records.append({"nombre": nombre, "puntos": record})
+                    records.sort(key=lambda x: x["puntos"], reverse=True)
+                    records = records[:5]
+                with open("records.txt", "w") as f:
+                    f.write(", ".join([f'{{"nombre": "{r["nombre"]}", "puntos": {r["puntos"]}}}' for r in records]))
             self.estado.actualizar_estado("¡Incorrecto! Reiniciando...")
             self.reiniciar_juego()
 
